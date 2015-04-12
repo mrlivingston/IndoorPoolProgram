@@ -7,6 +7,24 @@ package AppPackage;
 
 //import javax.swing.JOptionPane;
 
+import java.sql.*;
+import java.util.Vector;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import net.proteanit.sql.DbUtils;
+
+
+/*
+{
+        case val:
+            
+            break;
+        default:
+            throw new AssertionError();
+    
+
+}
+
 /**
  
  * @author Nathan
@@ -16,9 +34,22 @@ public class StartGUI extends javax.swing.JFrame {
     /**
      * Creates new form StartGUI
      */
+    
+    Connection conn = null;
+    ResultSet rs = null;
+    Statement st = null;
+    String s;
+    
     public StartGUI() {
         initComponents();
-    }
+        }
+     
+        
+       // Object columnsProgram[] = {"Program ID", "Program Name", "Description"};
+       // DefaultTableModel table2 =(DefaultTableModel) tableProgram.getModel();
+        //table2.addRow(new Object[]{"value1", "value2", "value3", "value4", "value5", "value6"});
+        //table2.setDataVector(rowData, columnsProgram);
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,13 +62,27 @@ public class StartGUI extends javax.swing.JFrame {
 
         jSeparator1 = new javax.swing.JSeparator();
         jMenuItem5 = new javax.swing.JMenuItem();
-        jLabel1 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableSection = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblProgram = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        menuNew = new javax.swing.JMenu();
+        menuSection = new javax.swing.JMenuItem();
+        menuProgram = new javax.swing.JMenuItem();
+        menuPatron = new javax.swing.JMenuItem();
+        menuEmployee = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        menuSearch = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
 
@@ -45,40 +90,189 @@ public class StartGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Main");
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Program Name Here");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, -1));
+        jTabbedPane1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jTabbedPane1ComponentShown(evt);
+            }
+        });
+
+        tableSection.setAutoCreateRowSorter(true);
+        tableSection.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableSection.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tableSection);
+
+        jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addContainerGap(479, Short.MAX_VALUE))
+            .addComponent(jScrollPane1)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(154, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Section", jPanel1);
+
+        tblProgram.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblProgram.setName(""); // NOI18N
+        jScrollPane3.setViewportView(tblProgram);
+
+        jButton2.setText("Load Program Table");
+        jButton2.setName("btnLoadTable"); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(58, 58, 58))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Program", jPanel2);
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable2.setName("tblPatron"); // NOI18N
+        jScrollPane5.setViewportView(jTable2);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(109, 109, 109)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Patron", jPanel3);
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("Add Program");
-        jMenuItem1.setInheritsPopupMenu(true);
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        menuNew.setText("New");
+
+        menuSection.setText("Section");
+        menuSection.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                menuSectionActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        menuNew.add(menuSection);
 
-        jMenuItem2.setText("Add Course");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        menuProgram.setText("Program");
+        menuProgram.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                menuProgramActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        menuNew.add(menuProgram);
 
-        jMenuItem3.setText("Add Patron");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        menuPatron.setText("Patron");
+        menuPatron.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                menuPatronActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
+        menuNew.add(menuPatron);
 
-        jMenuItem4.setText("Add Employee");
-        jMenu1.add(jMenuItem4);
+        menuEmployee.setText("Employee");
+        menuEmployee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuEmployeeActionPerformed(evt);
+            }
+        });
+        menuNew.add(menuEmployee);
+
+        jMenu1.add(menuNew);
+        jMenu1.add(jSeparator2);
+
+        menuSearch.setText("Search");
+        menuSearch.setInheritsPopupMenu(true);
+        menuSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSearchActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuSearch);
 
         jMenuBar1.add(jMenu1);
 
@@ -90,34 +284,87 @@ public class StartGUI extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        setSize(new java.awt.Dimension(266, 289));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1))
+        );
+
+        pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void menuSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuSearchActionPerformed
+
+    private void menuSectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSectionActionPerformed
+        // TODO add your handling code here:
+        new Section().setVisible(true);
+    }//GEN-LAST:event_menuSectionActionPerformed
+
+    private void menuProgramActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProgramActionPerformed
         // TODO add your handling code here:
         new Program().setVisible(true);
-        setVisible(false);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_menuProgramActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-        new Course().setVisible(true);
-        setVisible(false);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void menuEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEmployeeActionPerformed
         // TODO add your handling code here:
         new Person().setVisible(true);
-        setVisible(false);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_menuEmployeeActionPerformed
+
+    private void menuPatronActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPatronActionPerformed
+        // TODO add your handling code here:
+        new Person().setVisible(true);
+    }//GEN-LAST:event_menuPatronActionPerformed
+
+    private void jTabbedPane1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTabbedPane1ComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTabbedPane1ComponentShown
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model=(DefaultTableModel) tableSection.getModel();
+        model.addRow(new Object[]{"value1", "value2", "value3", "value4"});
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        
+        try
+        {
+           Class.forName("com.mysql.jdbc.Driver");
+            conn=DriverManager.getConnection("jdbc:mysql:///bipprogrammanager","root","javaclass1!");
+            String query = "SELECT patronID, patronFirstName, patronLastName, patronAddress, patronCity, patronPhone  from PATRON";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            tblProgram.setModel(DbUtils.resultSetToTableModel(rs));
+        }
+        catch(ClassNotFoundException | SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+   
+        
+      //  setVisible(false);
+                                
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
@@ -138,7 +385,8 @@ public class StartGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(StartGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        //Person form = new Person();
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -148,16 +396,31 @@ public class StartGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JMenuItem menuEmployee;
+    private javax.swing.JMenu menuNew;
+    private javax.swing.JMenuItem menuPatron;
+    private javax.swing.JMenuItem menuProgram;
+    private javax.swing.JMenuItem menuSearch;
+    private javax.swing.JMenuItem menuSection;
+    private javax.swing.JTable tableSection;
+    private javax.swing.JTable tblProgram;
     // End of variables declaration//GEN-END:variables
 }
